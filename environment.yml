@@ -1,0 +1,10 @@
+name: linfl
+channels:
+  - default
+  - conda-forge
+dependencies:
+  - python=3.9.*
+  - python-dotenv=0.19.*
+  - selenium=3.141.*
+  - spacy=3.1.*
+  - spacy-model-nl_core_news_sm=3.1.*
