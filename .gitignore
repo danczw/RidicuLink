@@ -1,5 +1,6 @@
 # folder and files
-webdriver/
+scraper/chromedriver.exe
+data/parsed_text.json
 
 # envs
 .env

@@ -1,81 +1,33 @@
 from dotenv import load_dotenv
 import os
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import spacy
-import time
+import scraper as scrp
 
-#-----SCRAPING-----------------------------------------------------------------#
+# webdriver path and file name
+chrome_driver_path = './scraper/chromedriver.exe'
+# output data path
+data_path = './data/'
 
-# init chrome webdriver
-driver_path = 'webdriver/chromedriver.exe'
-driver = webdriver.Chrome(executable_path=driver_path)
-
-# get LinkedIn login data
+# load env variables
 load_dotenv()
 USER = os.getenv('LINKEDIN_USER')
-PASSWORD = os.getenv('LINKEDIN_PASSWORD')
+PW = os.getenv('LINKEDIN_PASSWORD')
 
-# login to LinkedIn
-driver.get('https://www.linkedin.com/login')
-time.sleep(3)
-driver.find_element_by_id('username').send_keys(USER)
-driver.find_element_by_id('password').send_keys(PASSWORD)
-driver.find_element_by_id('password').send_keys(Keys.RETURN)
+# login, search url as well as search words and post text DOM element
+linkedin_login_url = 'https://www.linkedin.com/login'
+linkedin_search_root_url = 'https://www.linkedin.com/search/results/content/?keywords='       
+search_words = ['forbes30under30']
+post_element_class = 'feed-shared-update-v2__commentary'
 
-# set hashtags to scrape post text from
-hashtags = ['forbes30under30']
-content_root_path = 'https://www.linkedin.com/search/results/content/?keywords='
+# tokens for data privacy filter
+tokens = ['PROPN'] # PROPN = proper noun
 
-all_text = []
+# execute crawler
+linkedin_scraper = scrp.scraper(chrome_driver_path,
+                           linkedin_login_url,
+                           linkedin_search_root_url)
+linkedin_scraper.login(USER, PW)
+linkedin_scraper.get_post_text(search_words[0], post_element_class, 3)
+linkedin_scraper.clean_texts(tokens)
+linkedin_scraper.save_clean_text(data_path)
 
-# iterate through hashtags to get posts
-for word in hashtags:
-    time.sleep(3)
-
-    # get hashtag search results
-    driver.get(content_root_path + word)
-    time.sleep(3)
-
-    for i in range(2):
-        # get a list of all text elements from post by HTML element class name
-        all_posts = driver.find_elements_by_class_name(
-            'feed-shared-update-v2__commentary')
-        
-        # executes JavaScript to scroll the div into view
-        driver.execute_script("arguments[0].scrollIntoView();", all_posts[-1])
-        time.sleep(3)
-
-    # itereate through posts
-    for post in all_posts:
-        # get post text
-        all_text.append(post.text)
-
-
-#-----CLEANING-----------------------------------------------------------------#
-
-# load nlp model for cleanin data privacy related text content
-nlp = spacy.load('nl_core_news_sm')
-
-all_text_clean = []
-
-# iterate through previously scraped texts
-for text in all_text:
-    # parse text to list of tokens
-    doc = nlp(text)
-
-    filtered_text = ''
-    for token in doc:
-        # replace word if proper noun, noun, or number
-        if token.pos_ in ['PROPN']:
-            new_token = f" <{token.ent_type_}>"
-        else:
-            new_token = f' {token.text}'
-        
-        # concatenate
-        filtered_text += new_token
-    
-    # remove leading space
-    filtered_text = filtered_text[1:]
-    
-    print(filtered_text)
+print(linkedin_scraper.all_text_clean)
