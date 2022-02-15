@@ -3,6 +3,7 @@ channels:
   - default
   - conda-forge
 dependencies:
+  - openai=0.14.*
   - python=3.9.*
   - python-dotenv=0.19.*
   - selenium=3.141.*
