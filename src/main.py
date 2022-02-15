@@ -17,5 +17,5 @@ with open(file_path + file_name, 'r') as file:
 keys = list(text_data.keys())
 
 # call openai api
-response = openai.Completion.create(engine="text-davinci-001", prompt=text_data[keys[0]][0], max_tokens=20)
+response = openai.Completion.create(engine="text-davinci-001", prompt=text_data[keys[0]], max_tokens=20)
 print(response)

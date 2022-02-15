@@ -1,6 +1,7 @@
 # folder and files
 scraper/chromedriver.exe
 data/parsed_text.json
+parsed_text.json
 
 # envs
 .env

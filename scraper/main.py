@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-import scraper as scrp
+import scraper_sel as scrp
 
 # webdriver path and file name
 chrome_driver_path = './scraper/chromedriver.exe'
@@ -30,4 +30,4 @@ linkedin_scraper.get_post_text(search_words[0], post_element_class, 3)
 linkedin_scraper.clean_texts(tokens)
 linkedin_scraper.save_clean_text(data_path)
 
-print(linkedin_scraper.all_text_clean)
+print('scraper successful')

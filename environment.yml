@@ -3,6 +3,9 @@ channels:
   - default
   - conda-forge
 dependencies:
+  - beautifulsoup4=4.9.*
+  - lxml=4.7.*
+  - mechanize=0.4.*
   - openai=0.14.*
   - python=3.9.*
   - python-dotenv=0.19.*
