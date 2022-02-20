@@ -6,3 +6,6 @@ parsed_text.json
 
 # envs
 .env
+
+# python
+__pycache__/
