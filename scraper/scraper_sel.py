@@ -18,14 +18,12 @@ class scraper:
         self.all_texts = []
         self.all_texts_clean = []
     
-    def login(self, user, password):
+    def login(self, user: str, password: str):
         '''
         Login to url with provided user name and password
 
         Parameter
         ---------
-        url : str
-            url to login
         user : str
             user name as needed for login
         password : str
@@ -38,7 +36,7 @@ class scraper:
         self.driver.find_element_by_id('password').send_keys(self.Keys.RETURN)
     
     
-    def get_post_text(self, search_word, dom_element, iterations):
+    def get_post_text(self, search_word: str, dom_element: str, iterations: int):
         '''
         Scrape LinkedIn post text of posts found by a specified word
 
@@ -74,7 +72,7 @@ class scraper:
             # get post text
             self.all_texts.append(post.text)
     
-    def clean_texts(self, tokens):
+    def clean_texts(self, tokens: list):
         '''
         Clean text of data privacy related content (e.g. names)
 
@@ -133,7 +131,7 @@ class scraper:
         
         self.all_texts_clean = all_texts_filtered
 
-    def save_clean_text(self, file_path):
+    def save_clean_text(self, file_path: str):
         '''
         Translate list into json and save file named after
             search word and run date

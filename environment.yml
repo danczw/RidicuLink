@@ -3,6 +3,7 @@ channels:
   - default
   - conda-forge
 dependencies:
+  - azure-storage-blob=12.9.*
   - langdetect=1.0.*
   - openai=0.14.*
   - python=3.9.*
