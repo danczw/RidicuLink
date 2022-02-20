@@ -2,6 +2,7 @@
 class scraper:
     from datetime import datetime
     import json
+    import langdetect
     import os
     from selenium import webdriver
     from selenium.webdriver.common.keys import Keys
@@ -15,7 +16,7 @@ class scraper:
         self.search_word = ''
         self.all_posts = []
         self.all_texts = []
-        self.all_text_clean = []
+        self.all_texts_clean = []
     
     def login(self, user, password):
         '''
@@ -94,25 +95,48 @@ class scraper:
 
             filtered_text = ''
             for token in doc:
-                # replace word if word classified as specific tokens TODO: review and expand
+                # replace word if word classified as specific tokens
+                # TODO: review and expand
                 if token.pos_ in tokens:
-                    new_token = f" <{token.ent_type_}>"
+                    # new_token = f' <{token.ent_type_}>'
+                    new_token = ''
                 else:
                     new_token = f' {token.text}'
                 
                 # concatenate
                 filtered_text += new_token
             
-            # remove leading space
+            # remove leading space and new lines
             filtered_text = filtered_text[1:]
+            filtered_text = filtered_text.replace('\n', '')
 
-            self.all_text_clean.append(filtered_text)
+            self.all_texts_clean.append(filtered_text)
             # print(filtered_text)
+
+    def keep_language_texts(self, lang='en'):
+        '''
+        Keep all texts from cleaned texts wich are the specified language
+        
+        Parameter
+        ---------
+        lang : str
+            language which texts to keep, default is english 
+        '''
+        all_texts = self.all_texts_clean
+        all_texts_filtered = []
+
+        for text in all_texts:
+            detected_lang = self.langdetect.detect(text)
+            
+            if detected_lang == lang:
+                all_texts_filtered.append(text)
+        
+        self.all_texts_clean = all_texts_filtered
 
     def save_clean_text(self, file_path):
         '''
         Translate list into json and save file named after
-            run date and search word
+            search word and run date
 
         Parameter
         ---------
@@ -123,7 +147,7 @@ class scraper:
                        '_' + \
                        self.datetime.now().strftime("%Y%m%d-%H%M%S")
         new_data_dict = {}
-        new_data_dict[new_data_key] = self.all_text_clean
+        new_data_dict[new_data_key] = self.all_texts_clean
 
         if not self.os.path.isfile(file_path + 'parsed_text.json'):
             # save data
@@ -137,4 +161,11 @@ class scraper:
                 file.seek(0)
                 self.json.dump(existing_data, file, indent = 4)
 
-        
+    def reset_results(self):
+        '''
+        Reset crawled results saved in current class object
+        '''
+        self.search_word = ''
+        self.all_posts = []
+        self.all_texts = []
+        self.all_texts_clean = []
