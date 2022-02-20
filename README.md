@@ -1,4 +1,4 @@
-# LINFLUENC - LinkedIn posts NLP bot
+# LINFLUENC - social media NLP bot
  
 Be active to LinkedIn using computer generated posts via gpt3:
 
