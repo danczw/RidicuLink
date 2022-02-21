@@ -1,5 +1,5 @@
 # folder and files
-scraper/chromedriver.exe
+chromedriver.exe
 data/parsed_text.json
 data/temp.json
 parsed_text.json
