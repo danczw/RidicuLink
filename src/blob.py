@@ -1,63 +1,125 @@
-from azure.storage.blob import BlobServiceClient
-from dotenv import load_dotenv
-import json
-import os
+class blob:
+    from azure.storage.blob import BlobServiceClient
+    from datetime import datetime
+    import json
+    import math
+    import random
 
-# load env variables and set api key
-load_dotenv()
-AZURE_CON_STRING = os.getenv('AZURE_CON_STRING')
+    def __init__(self, azure_key: str, container_name: str, file_name: str):
+        self.connection_string = azure_key
+        self.container_name = container_name
+        self.file_name = file_name
+        self.selected_run = ''
+        self.selected_run_texts = []
 
-try:
-    # Create the BlobServiceClient object which will be used to create a container client
-    blob_service_client = BlobServiceClient.from_connection_string(
-                                                            AZURE_CON_STRING)
+    def _select_rand_items(self, text_dict: dict, perc: float):
+        '''
+        Selects a random key from a dict and random items from its values
+        amount of items selected depends on parameter
 
-    # Create a unique name for the container
-    container_name = 'linfluenc-parsed-texts'
+        Parameter
+        ---------
+        text_dict : dict[str => list]
+            dictionary of scrape runs and corresponding list of texts
+        perc : float 
+            select % of items from a list => 0.7: 70% of items are selected
 
-    # List container in storage account
-    container_list = blob_service_client.list_containers()
-    container_list = [container.name for container in container_list]
-    print(container_list)
+        Return
+        ---------
+        rand_run_key : str
+            random scrape run key
+        rand_run_texts : list
+            random texts from random scrape run
+        '''
+        # get random run
+        all_run_keys = text_dict.keys()
+        rand_run_key = self.random.sample(all_run_keys, 1)[0]
 
-    if container_name in container_list:
-        # Load container if exists
-        container_client =  blob_service_client.get_container_client(
-                                                            container_name)
-    else:
-        # Create the container if not exists
-        container_client = blob_service_client.create_container(
-                                                            container_name)
+        # get random text items from run
+        all_run_texts = text_dict[rand_run_key]
+        perc = self.math.floor(perc * len(all_run_texts))
+
+        if perc == 0:
+            n_texts = 1
+        else:
+            n_texts = perc
+
+        rand_run_texts = self.random.sample(all_run_texts, n_texts)
+
+        return rand_run_key, rand_run_texts
+
+    def load_rand_texts(self, perc: float):
+        '''
+        Loads existing text data from Azure Blob Storage
+
+        Parameter
+        ---------
+        perc : float
+            select % of texts from scrape run to be used for gpt3
+            => i.e. 0.7 means 70% of texts found for the random selected
+                scrape run will be used to create a new text
+        '''
+        try:
+            # Create the BlobServiceClient object which will be used to create a container client
+            blob_service_client = self.BlobServiceClient.from_connection_string(
+                                                        self.connection_string)
+
+            # get blob client
+            blob_client = blob_service_client.get_blob_client(
+                                                container = self.container_name,
+                                                blob = self.file_name)
+
+            # get existing scraped data from Azure blob storage
+            all_texts_byte = blob_client.download_blob().readall()
+            all_texts_json = self.json.loads(all_texts_byte)
+
+            run_key, run_texts = self._select_rand_items(all_texts_json, perc)
+
+            self.selected_run = run_key
+            self.selected_run_texts = run_texts
     
-    # Create a blob client using the local file name as the name for the blob
-    local_path = './data/'
-    local_file_name = 'parsed_text.json'
-    upload_file_path = os.path.join(local_path, local_file_name)
-    blob_client = blob_service_client.get_blob_client(container=container_name,
-                                                      blob=local_file_name)
+        except Exception as ex:
+            print('Exception:')
+            print(ex)
+            
+    def upload_texts(self, text_data: list, search_word: str):
+        '''
+        Appends and upload latest data to existing texts on Azure Blob Storage
 
-    # get new scraped data
-    with open(upload_file_path, 'r+') as local_file:
-        new_data = json.load(local_file)
-        local_file.close()
+        Parameter
+        ---------
+        text_data : list
+            list of new scraped texts
+        search_word : word for which scraping was done for
+        '''
+        try:
+            # Create the BlobServiceClient object which will be used to create a container client
+            blob_service_client = self.BlobServiceClient.from_connection_string(
+                                                        self.connection_string)
 
-    # get existing scraped data from Azure blob storage
-    with open(local_path + 'temp.json', 'wb') as temp_file:
-        old_data = blob_client.download_blob()
-        old_data.readinto(temp_file)
-        temp_file.close()
+            # get blob client
+            blob_client = blob_service_client.get_blob_client(
+                                                container = self.container_name,
+                                                blob = self.file_name)
 
-    # append data 
-    with open(local_path + 'temp.json', 'r+') as temp_file:
-        blob_data_json = json.load(temp_file)
-        blob_data_json.update(new_data)
-        temp_file.close()
+            # setup new scraped data key
+            new_data_key = search_word + \
+                       '_' + \
+                       self.datetime.now().strftime("%Y%m%d-%H%M%S")
 
-    # open appended data as byte and save to blob
-    with open(upload_file_path, 'rb') as upload_file:
-        blob_client.upload_blob(upload_file, overwrite=True)
-        upload_file.close()
+            # get existing scraped data from Azure blob storage
+            existing_texts_byte = blob_client.download_blob().readall()
+            existing_texts_json = self.json.loads(existing_texts_byte)
 
-except Exception as ex:
-    print('Exception:')
-    print(ex)
+            # combine new and existing data
+            all_texts_json = existing_texts_json.copy()
+            all_texts_json[new_data_key] = text_data
+
+            # upload combined data
+            blob_client.upload_blob(all_texts_json, overwrite=True)
+
+            print('upload complete')
+
+        except Exception as ex:
+            print('Exception:')
+            print(ex)
