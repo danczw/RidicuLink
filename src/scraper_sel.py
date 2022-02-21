@@ -1,6 +1,5 @@
 
 class scraper:
-    from datetime import datetime
     import json
     import langdetect
     import os
@@ -36,9 +35,9 @@ class scraper:
         self.driver.find_element_by_id('password').send_keys(self.Keys.RETURN)
     
     
-    def get_post_text(self, search_word: str, dom_element: str, iterations: int):
+    def get_text(self, search_word: str, dom_element: str, iterations: int):
         '''
-        Scrape LinkedIn post text of posts found by a specified word
+        Scrape LinkedIn texts of posts found by a specified word
 
         Parameter
         ---------
@@ -51,7 +50,7 @@ class scraper:
         iterations : int
             number of iterations to scroll though posts found
             initially, only first few search results are loaded and found by selenium
-            the higher the iteration, the more post can potentially be scraped
+            the higher the iteration, the more post texts can potentially be scraped
         '''
         self.search_word = search_word
         self.time.sleep(3)
@@ -131,34 +130,6 @@ class scraper:
         
         self.all_texts_clean = all_texts_filtered
 
-    def save_clean_text(self, file_path: str):
-        '''
-        Translate list into json and save file named after
-            search word and run date
-
-        Parameter
-        ---------
-        file_path : str
-            path to save JSON to
-        '''
-        new_data_key = self.search_word + \
-                       '_' + \
-                       self.datetime.now().strftime("%Y%m%d-%H%M%S")
-        new_data_dict = {}
-        new_data_dict[new_data_key] = self.all_texts_clean
-
-        if not self.os.path.isfile(file_path + 'parsed_text.json'):
-            # save data
-            with open(file_path + 'parsed_text.json', 'w') as file:
-                self.json.dump(new_data_dict, file, indent = 4)
-        else:
-            # save data
-            with open(file_path + 'parsed_text.json', 'r+') as file:
-                existing_data = self.json.load(file)
-                existing_data.update(new_data_dict)
-                file.seek(0)
-                self.json.dump(existing_data, file, indent = 4)
-
     def reset_results(self):
         '''
         Reset crawled results saved in current class object
@@ -167,3 +138,9 @@ class scraper:
         self.all_posts = []
         self.all_texts = []
         self.all_texts_clean = []
+
+    def close_connection(self):
+        '''
+        Close WebDriver session
+        '''
+        self.driver.quit()
