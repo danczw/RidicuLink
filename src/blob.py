@@ -116,7 +116,7 @@ class blob:
             all_texts_json[new_data_key] = text_data
 
             # upload combined data
-            blob_client.upload_blob(all_texts_json, overwrite=True)
+            blob_client.upload_blob(self.json.dumps(all_texts_json), overwrite=True)
 
             print('upload complete')
 
