@@ -37,14 +37,14 @@ class blob:
 
         # get random text items from run
         all_run_texts = text_dict[rand_run_key]
-        perc = self.math.floor(perc * len(all_run_texts))
+        number_of_texts = self.math.floor(perc * len(all_run_texts))
 
-        if perc == 0:
-            n_texts = 1
-        else:
-            n_texts = perc
+        if number_of_texts == 0:
+            number_of_texts = 1
+        
+        number_of_texts = min(20, number_of_texts)
 
-        rand_run_texts = self.random.sample(all_run_texts, n_texts)
+        rand_run_texts = self.random.sample(all_run_texts, number_of_texts)
 
         return rand_run_key, rand_run_texts
 
