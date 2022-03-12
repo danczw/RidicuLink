@@ -27,18 +27,20 @@ openai_bot = nlp_bot(OPEN_AI_KEY, selected_run_texts, selected_run)
 openai_bot.create_text(250, 1, 0.9)
 
 # post to linkedin
-PROFILE_ID = os.getenv('PROFILE_ID')
+ORGANIZATION_ID = os.getenv('ORGANIZATION_ID')
 ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
 
 url = 'https://api.linkedin.com/v2/ugcPosts'
-comment = f'{openai_bot.new_text}\n\nkey word: {openai_bot.search_word.split("_")[0]}'
+comment = f'''{openai_bot.new_text}\n
+              =========================\n
+              This text was created using GPT-3. Key word: #{openai_bot.search_word.split("_")[0]}'''
 
 headers = {'Content-Type': 'application/json',
            'X-Restli-Protocol-Version': '2.0.0',
            'Authorization': 'Bearer ' + ACCESS_TOKEN}
 
 post_data = {
-    'author': 'urn:li:person:'+PROFILE_ID,
+    'author': 'urn:li:organization:' + ORGANIZATION_ID,
     'lifecycleState': 'PUBLISHED',
     'specificContent': {
         'com.linkedin.ugc.ShareContent': {
