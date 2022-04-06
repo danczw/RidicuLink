@@ -1,10 +1,10 @@
-# TimerTrigger - Python
-
-The `TimerTrigger` makes it incredibly easy to have your functions executed on a schedule. This sample demonstrates a simple use case of calling your function every 5 minutes.
-
 # Setup
 
 Create virtual env with pip in the root azure function folder based on `requirements.txt`.
+
+# TimerTrigger - Python
+
+The `TimerTrigger` makes it incredibly easy to have your functions executed on a schedule. This sample demonstrates a simple use case of calling your function every 5 minutes.
 
 ## How it works
 
