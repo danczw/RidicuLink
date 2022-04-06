@@ -1,10 +1,10 @@
-class blob:
-    from azure.storage.blob import BlobServiceClient
-    from datetime import datetime
-    import json
-    import math
-    import random
+from azure.storage.blob import BlobServiceClient
+import datetime
+import json
+import math
+import random
 
+class blob:
     def __init__(self, azure_key: str, container_name: str, file_name: str):
         self.connection_string = azure_key
         self.container_name = container_name
@@ -33,18 +33,18 @@ class blob:
         '''
         # get random run
         all_run_keys = text_dict.keys()
-        rand_run_key = self.random.sample(all_run_keys, 1)[0]
+        rand_run_key = random.sample(all_run_keys, 1)[0]
 
         # get random text items from run
         all_run_texts = text_dict[rand_run_key]
-        number_of_texts = self.math.floor(perc * len(all_run_texts))
+        number_of_texts = math.floor(perc * len(all_run_texts))
 
         if number_of_texts == 0:
             number_of_texts = 1
         
         number_of_texts = min(20, number_of_texts)
 
-        rand_run_texts = self.random.sample(all_run_texts, number_of_texts)
+        rand_run_texts = random.sample(all_run_texts, number_of_texts)
 
         return rand_run_key, rand_run_texts
 
@@ -61,7 +61,7 @@ class blob:
         '''
         try:
             # Create the BlobServiceClient object which will be used to create a container client
-            blob_service_client = self.BlobServiceClient.from_connection_string(
+            blob_service_client = BlobServiceClient.from_connection_string(
                                                         self.connection_string)
 
             # get blob client
@@ -71,7 +71,7 @@ class blob:
 
             # get existing scraped data from Azure blob storage
             all_texts_byte = blob_client.download_blob().readall()
-            all_texts_json = self.json.loads(all_texts_byte)
+            all_texts_json = json.loads(all_texts_byte)
 
             run_key, run_texts = self._select_rand_items(all_texts_json, perc)
 
@@ -94,7 +94,7 @@ class blob:
         '''
         try:
             # Create the BlobServiceClient object which will be used to create a container client
-            blob_service_client = self.BlobServiceClient.from_connection_string(
+            blob_service_client = BlobServiceClient.from_connection_string(
                                                         self.connection_string)
 
             # get blob client
@@ -105,18 +105,18 @@ class blob:
             # setup new scraped data key
             new_data_key = search_word + \
                        '_' + \
-                       self.datetime.now().strftime("%Y%m%d-%H%M%S")
+                       datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
             # get existing scraped data from Azure blob storage
             existing_texts_byte = blob_client.download_blob().readall()
-            existing_texts_json = self.json.loads(existing_texts_byte)
+            existing_texts_json = json.loads(existing_texts_byte)
 
             # combine new and existing data
             all_texts_json = existing_texts_json.copy()
             all_texts_json[new_data_key] = text_data
 
             # upload combined data
-            blob_client.upload_blob(self.json.dumps(all_texts_json), overwrite=True)
+            blob_client.upload_blob(json.dumps(all_texts_json), overwrite=True)
 
             print('upload complete')
 

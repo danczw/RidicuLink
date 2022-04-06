@@ -1,15 +1,15 @@
+import json
+import langdetect
+import os
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import spacy
+import time
 
 class scraper:
-    import json
-    import langdetect
-    import os
-    from selenium import webdriver
-    from selenium.webdriver.common.keys import Keys
-    import spacy
-    import time
 
     def __init__(self, chrome_driver_path, login_url, search_root_url):        
-        self.driver = self.webdriver.Chrome(executable_path=chrome_driver_path)
+        self.driver = webdriver.Chrome(executable_path=chrome_driver_path)
         self.login_url = login_url
         self.search_root_url = search_root_url
         self.search_word = ''
@@ -29,10 +29,10 @@ class scraper:
             password as needed for login
         '''
         self.driver.get(self.login_url)
-        self.time.sleep(3)
+        time.sleep(3)
         self.driver.find_element_by_id('username').send_keys(user)
         self.driver.find_element_by_id('password').send_keys(password)
-        self.driver.find_element_by_id('password').send_keys(self.Keys.RETURN)
+        self.driver.find_element_by_id('password').send_keys(Keys.RETURN)
     
     
     def get_text(self, search_word: str, dom_element: str, iterations: int):
@@ -53,9 +53,9 @@ class scraper:
             the higher the iteration, the more post texts can potentially be scraped
         '''
         self.search_word = search_word
-        self.time.sleep(3)
+        time.sleep(3)
         self.driver.get(self.search_root_url + search_word)
-        self.time.sleep(3)
+        time.sleep(3)
 
         # iterate through posts to load more
         for i in range(iterations):
@@ -64,7 +64,7 @@ class scraper:
         
             # executes JavaScript to scroll the last found div into view
             self.driver.execute_script("arguments[0].scrollIntoView();", self.all_posts[-1])
-            self.time.sleep(1)
+            time.sleep(1)
 
         # itereate through posts to get post text
         for post in self.all_posts:
@@ -83,7 +83,7 @@ class scraper:
                 data, found here: https://universaldependencies.org/docs/u/pos/
         '''
         # load nlp model for cleanin data privacy related text content
-        nlp = self.spacy.load('nl_core_news_sm')
+        nlp = spacy.load('nl_core_news_sm')
 
         # iterate through previously scraped texts
         for text in self.all_texts:
@@ -123,7 +123,7 @@ class scraper:
         all_texts_filtered = []
 
         for text in all_texts:
-            detected_lang = self.langdetect.detect(text)
+            detected_lang = langdetect.detect(text)
             
             if detected_lang == lang:
                 all_texts_filtered.append(text)

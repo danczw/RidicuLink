@@ -1,12 +1,15 @@
+import openai
+
 class nlp_bot:
-    import openai
 
     def __init__(self, api_key: str, text_data: list, search_word: str):
-        self.openai.api_key = api_key
+        self.api_key = api_key
         self.text_data = text_data
         self.search_word = search_word
         self.response = {}
         self.new_text = ''
+
+        openai.api_key = self.api_key
 
         print(f'Using {len(text_data)} texts from {search_word} to create new post')
 
@@ -56,7 +59,7 @@ class nlp_bot:
                 for ones with a well-defined answer
         '''
         # call openai api
-        response = self.openai.Completion.create(engine = "text-davinci-001",
+        response = openai.Completion.create(engine = "text-davinci-001",
                                         prompt = self.text_data,
                                         max_tokens = max_tokens,
                                         n = n,
