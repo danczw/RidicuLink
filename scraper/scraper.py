@@ -123,10 +123,14 @@ class scraper:
         all_texts_filtered = []
 
         for text in all_texts:
-            detected_lang = langdetect.detect(text)
+            try:
+                detected_lang = langdetect.detect(text)
             
-            if detected_lang == lang:
-                all_texts_filtered.append(text)
+                if detected_lang == lang:
+                    all_texts_filtered.append(text)
+            
+            except langdetect.lang_detect_exception.LangDetectException:
+                pass
         
         self.all_texts_clean = all_texts_filtered
 

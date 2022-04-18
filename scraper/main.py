@@ -1,23 +1,23 @@
 from blob import blob
 from dotenv import load_dotenv
 import os
-import scraper_sel as scrp
+import scraper as scrp
 
 # webdriver path and file name
-chrome_driver_path = './src/chromedriver.exe'
+chrome_driver_path = './scraper/chromedriver.exe' # TODO: change to your path
 
 # load env variables
 load_dotenv()
 USER = os.getenv('LINKEDIN_USER')
 PW = os.getenv('LINKEDIN_PASSWORD')
-AZURE_CON_STRING = os.getenv('AZURE_CON_STRING')
-print(AZURE_CON_STRING)
+BLOB_CON_STRING = os.getenv('BLOB_CON_STRING')
 
 # login, search url as well as search words and text DOM element
 linkedin_login_url = 'https://www.linkedin.com/login'
-linkedin_search_root_url = 'https://www.linkedin.com/search/results/content/?keywords='       
-search_words = ['ceolunch']
+linkedin_search_root_url = 'https://www.linkedin.com/feed/hashtag/'
 text_element_class = 'feed-shared-update-v2__commentary'
+# TODO: update search words       
+search_words = ['leadership', 'führung']
 
 # tokens for data privacy filter
 tokens = ['PROPN'] # PROPN = proper noun
@@ -35,14 +35,14 @@ linkedin_scraper = scrp.scraper(chrome_driver_path,
 linkedin_scraper.login(USER, PW)
 
 # init azure connections
-azure_blob = blob(AZURE_CON_STRING, container_name, file_name)
+azure_blob = blob(BLOB_CON_STRING, container_name, file_name)
 
 for word in search_words:
     # reset previous results of loop
     linkedin_scraper.reset_results()
 
     # execute crawling
-    linkedin_scraper.get_text(word, text_element_class, 3)
+    linkedin_scraper.get_text(word, text_element_class, 10)
     linkedin_scraper.clean_texts(tokens)
     linkedin_scraper.keep_language_texts('en')
 
