@@ -5,6 +5,5 @@
 azure-core
 azure-functions
 azure-storage-blob
-python-dotenv
 langdetect
 openai
