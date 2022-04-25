@@ -32,7 +32,7 @@ def main(mytimer: func.TimerRequest) -> None:
     azure_blob = blob(BLOB_CON_STRING, container_name, file_name)
 
     # load data
-    azure_blob.load_rand_texts(0.7)
+    azure_blob.load_rand_texts(0.5)
     selected_run = azure_blob.selected_run
     selected_run_texts = azure_blob.selected_run_texts
 

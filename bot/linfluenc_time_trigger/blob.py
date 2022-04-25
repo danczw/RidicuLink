@@ -42,7 +42,7 @@ class blob:
         if number_of_texts == 0:
             number_of_texts = 1
         
-        number_of_texts = min(20, number_of_texts)
+        number_of_texts = min(10, number_of_texts)
 
         rand_run_texts = random.sample(all_run_texts, number_of_texts)
 
