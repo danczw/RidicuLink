@@ -17,7 +17,7 @@ linkedin_login_url = 'https://www.linkedin.com/login'
 linkedin_search_root_url = 'https://www.linkedin.com/feed/hashtag/'
 text_element_class = 'feed-shared-update-v2__commentary'
 # TODO: update search words       
-search_words = ['leadership', 'führung']
+search_words = ['beavoicenotanecho', 'linkedin', 'thoughtleadership', 'thoughtleader']
 
 # tokens for data privacy filter
 tokens = ['PROPN'] # PROPN = proper noun
@@ -42,7 +42,7 @@ for word in search_words:
     linkedin_scraper.reset_results()
 
     # execute crawling
-    linkedin_scraper.get_text(word, text_element_class, 10)
+    linkedin_scraper.get_text(word.lower(), text_element_class, 10)
     linkedin_scraper.clean_texts(tokens)
     linkedin_scraper.keep_language_texts('en')
 
