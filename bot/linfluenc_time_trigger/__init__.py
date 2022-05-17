@@ -38,8 +38,8 @@ def main(mytimer: func.TimerRequest) -> None:
 
     # create new post
     openai_bot = nlp_bot(OPENAI_API_KEY, selected_run_texts, selected_run)
-    openai_bot.create_text(250, 1, 0.9)
-
+    openai_bot.create_text(100, 1, 0.7)
+    
     # post to linkedin
     url = 'https://api.linkedin.com/v2/ugcPosts'
     comment = f'''{openai_bot.new_text}\n
