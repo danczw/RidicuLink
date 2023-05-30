@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "RidiculeLink"
+name = "RidicuLink"
 version = "0.1.0"
 description = "Create fictional, satirical LLM created content based on existing text post from LinkedIn."
 authors = ["danczw <dev.dc@pm.me>"]
@@ -14,6 +14,7 @@ python-dotenv = "^1.0.0"
 en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0.tar.gz" }
 langdetect = "^1.0.9"
 PyYAML = "^6.0"
+requests = "^2.31.0"
 
 [tool.poetry.dev-dependencies]
 ruff = "^0.0.270"
