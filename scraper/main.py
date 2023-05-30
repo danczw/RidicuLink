@@ -40,7 +40,7 @@ def main():
         linkedin_scraper.reset_results()
 
         # execute crawling
-        linkedin_scraper.get_text(word.lower(), config_params["text_element_class"], 5)
+        linkedin_scraper.get_text(word.lower(), config_params["linkedin_text_element_class"], 5)
         linkedin_scraper.clean_texts(tokens)
         linkedin_scraper.keep_language_texts("en")
 

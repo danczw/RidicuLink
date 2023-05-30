@@ -9,9 +9,16 @@ db_table_name: "posts"
 # login, search url as well as text DOM element
 linkedin_login_url: "https://www.linkedin.com/login"
 linkedin_search_root_url: "https://www.linkedin.com/feed/hashtag/"
-text_element_class: "feed-shared-update-v2__commentary"
+linkedin_text_element_class: "feed-shared-update-v2__commentary"
 
 # topics / hashtags to search for existing LinkedIn posts which will be used as input for the model
 search_topics: ["ChatGPT"]
 # topics / hashtags to post about. topics should have been scraped before as part of the search_words
 post_topics: ["ChatGPT"]
+
+# openai content creation settings
+oai_model: "davinci"
+oai_max_tokens: 100
+oai_n_completions: 1
+oai_temperature: 0.7
+oai_prompt_prefix: "Create a sarcastic, near ridiculous social media post using the following posts as inspiration: \n\n"
