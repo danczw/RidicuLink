@@ -1,10 +1,9 @@
 import os
 
 import yaml
-from database import PostDB
 from dotenv import load_dotenv
-
-import scraper as scrp
+from utils.database import PostDB
+from utils.scraper import Scraper
 
 
 def main():
@@ -20,7 +19,7 @@ def main():
         raise ValueError("Please set environment variables LINKEDIN_USER and LINKEDIN_PASSWORD")
 
     # login to LinkedIn
-    linkedin_scraper = scrp.scraper(
+    linkedin_scraper = Scraper(
         driver_type=config_params["selenium_driver_type"],
         driver_path=config_params["selenium_driver_path"],
         login_url=config_params["linkedin_login_url"],
