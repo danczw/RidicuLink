@@ -1,0 +1,7 @@
+# webdriver type for scraping existing posts: chrome, firefox, or edge
+selenium_driver_type: "chrome"
+# path to the webdriver
+selenium_driver_path: "./scraper/chromedriver"
+
+# topics / hashtags to search for existing LinkedIn posts which will be used as input for the model
+search_words: ["ChatGPT"]

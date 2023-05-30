@@ -16,11 +16,8 @@ class scraper:
         driver_path: str,
         login_url: str,
         search_root_url: str,
-        browser_binary_location: str = "",
     ):
-        self.driver = self.get_web_driver(
-            driver_type=driver_type, driver_path=driver_path, browser_binary_location=browser_binary_location
-        )
+        self.driver = self.get_web_driver(driver_type=driver_type, driver_path=driver_path)
         self.login_url = login_url
         self.search_root_url = search_root_url
         self.search_word = ""
@@ -28,7 +25,7 @@ class scraper:
         self.all_texts = []
         self.all_texts_clean = []
 
-    def get_web_driver(self, driver_type: str, driver_path: str, browser_binary_location: str):
+    def get_web_driver(self, driver_type: str, driver_path: str):
         """Get the web driver for selenium
 
         Args:
@@ -41,17 +38,12 @@ class scraper:
         if not os.path.isfile(driver_path):
             raise ValueError(f"driver_path {driver_path} does not exist, please check if file exists")
 
-        # set options for binary location if provided
-        options = Options()
-        if browser_binary_location:
-            options.binary_location = browser_binary_location
-
         # check if driver type is supported and return driver
         match driver_type:
             case "chrome":
                 return webdriver.Chrome(executable_path=driver_path)
             case "firefox":
-                return webdriver.Firefox(options=options, executable_path=driver_path)
+                return webdriver.Firefox(executable_path=driver_path)
             case "edge":
                 return webdriver.Edge(executable_path=driver_path)
             case _:

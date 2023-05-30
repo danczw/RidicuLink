@@ -375,6 +375,14 @@ python-versions = ">=3.8"
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "pyyaml"
+version = "6.0"
+description = "YAML parser and emitter for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "requests"
 version = "2.31.0"
 description = "Python HTTP for Humans."
@@ -711,7 +719,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "af596c0b64b14bae1d99bd698c26e14116b8665488dd921b66c79aa859795f10"
+content-hash = "2d5c75ef97b4e61e5ade578280d089b263d551a4980503f6f800a713d81173a3"
 
 [metadata.files]
 aiohttp = []
@@ -749,6 +757,7 @@ pycparser = []
 pydantic = []
 pysocks = []
 python-dotenv = []
+pyyaml = []
 requests = []
 ruff = []
 selenium = []

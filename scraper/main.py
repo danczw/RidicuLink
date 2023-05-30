@@ -1,5 +1,6 @@
 import os
 
+import yaml
 from database import PostDB
 from dotenv import load_dotenv
 
@@ -7,17 +8,8 @@ import scraper as scrp
 
 
 def main():
-    # webdriver path and type: [chrome, firefox, edge]
-    # TODO: change according to your setup
-    selenium_driver_type = "chrome"
-    selenium_driver_path = "./scraper/chromedriver"
-    # TODO: optional, only needed if you want to use a specific browser binary, set to "" otherwise
-    binary_location = ""
-
-    # TODO: update search words
-    search_words = [
-        "ChatGPT",
-    ]
+    # get parameters from config yaml file
+    config_params = yaml.safe_load(open("./conf/config.yml"))
 
     # load env variables
     load_dotenv()
@@ -34,11 +26,10 @@ def main():
 
     # login to LinkedIn
     linkedin_scraper = scrp.scraper(
-        driver_type=selenium_driver_type,
-        driver_path=selenium_driver_path,
+        driver_type=config_params["selenium_driver_type"],
+        driver_path=config_params["selenium_driver_path"],
         login_url=linkedin_login_url,
         search_root_url=linkedin_search_root_url,
-        browser_binary_location=binary_location,
     )
     linkedin_scraper.login(USER, PW)
 
@@ -49,7 +40,7 @@ def main():
     db = PostDB(table_name="posts", db_name="linkedin.db")
     db.create_table(drop=True)
 
-    for word in search_words:
+    for word in config_params["search_words"]:
         # reset previous results of loop
         linkedin_scraper.reset_results()
 
