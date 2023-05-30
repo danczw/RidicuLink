@@ -9,6 +9,9 @@ __pycache__/
 # driver files
 chromedriver
 
+# sqlite database files
+*.db
+
 # Distribution / packaging
 .Python
 build/

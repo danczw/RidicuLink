@@ -1,5 +1,6 @@
 import os
 
+from database import PostDB
 from dotenv import load_dotenv
 
 import scraper as scrp
@@ -44,6 +45,10 @@ def main():
     # tokens for data privacy filter
     tokens = ["PROPN"]  # PROPN = proper noun
 
+    # initialize database
+    db = PostDB(table_name="posts", db_name="linkedin.db")
+    db.create_table(drop=True)
+
     for word in search_words:
         # reset previous results of loop
         linkedin_scraper.reset_results()
@@ -56,8 +61,9 @@ def main():
         n_texts = len(linkedin_scraper.all_texts_clean)
         print(f'>>> scraper successful: found {n_texts} texts for "{word}" <<<')
 
-        # save results
-        # TODO: implement
+        # save results into database
+        for text in linkedin_scraper.all_texts_clean:
+            db.insert(word, text)
 
     # close connection
     linkedin_scraper.close_connection()
