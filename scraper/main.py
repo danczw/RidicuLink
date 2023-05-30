@@ -19,17 +19,12 @@ def main():
     if USER is None or PW is None:
         raise ValueError("Please set environment variables LINKEDIN_USER and LINKEDIN_PASSWORD")
 
-    # login, search url as well as search words and text DOM element
-    linkedin_login_url = "https://www.linkedin.com/login"
-    linkedin_search_root_url = "https://www.linkedin.com/feed/hashtag/"
-    text_element_class = "feed-shared-update-v2__commentary"
-
     # login to LinkedIn
     linkedin_scraper = scrp.scraper(
         driver_type=config_params["selenium_driver_type"],
         driver_path=config_params["selenium_driver_path"],
-        login_url=linkedin_login_url,
-        search_root_url=linkedin_search_root_url,
+        login_url=config_params["linkedin_login_url"],
+        search_root_url=config_params["linkedin_search_root_url"],
     )
     linkedin_scraper.login(USER, PW)
 
@@ -37,15 +32,15 @@ def main():
     tokens = ["PROPN"]  # PROPN = proper noun
 
     # initialize database
-    db = PostDB(table_name="posts", db_name="linkedin.db")
+    db = PostDB(db_name=config_params["db_name"], table_name=config_params["db_table_name"])
     db.create_table(drop=True)
 
-    for word in config_params["search_words"]:
+    for word in config_params["search_topics"]:
         # reset previous results of loop
         linkedin_scraper.reset_results()
 
         # execute crawling
-        linkedin_scraper.get_text(word.lower(), text_element_class, 5)
+        linkedin_scraper.get_text(word.lower(), config_params["text_element_class"], 5)
         linkedin_scraper.clean_texts(tokens)
         linkedin_scraper.keep_language_texts("en")
 

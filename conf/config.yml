@@ -1,7 +1,17 @@
-# webdriver type for scraping existing posts: chrome, firefox, or edge
+# webdriver type for scraping existing posts (chrome, firefox, or edge) and path to the driver
 selenium_driver_type: "chrome"
-# path to the webdriver
 selenium_driver_path: "./scraper/chromedriver"
 
+# table name for storing scraped posts
+db_name: "linkedin.db"
+db_table_name: "posts"
+
+# login, search url as well as text DOM element
+linkedin_login_url: "https://www.linkedin.com/login"
+linkedin_search_root_url: "https://www.linkedin.com/feed/hashtag/"
+text_element_class: "feed-shared-update-v2__commentary"
+
 # topics / hashtags to search for existing LinkedIn posts which will be used as input for the model
-search_words: ["ChatGPT"]
+search_topics: ["ChatGPT"]
+# topics / hashtags to post about. topics should have been scraped before as part of the search_words
+post_topics: ["ChatGPT"]
