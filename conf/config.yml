@@ -15,9 +15,9 @@ linkedin_text_element_class: "feed-shared-update-v2__commentary"
 linkedin_post_url: "https://api.linkedin.com/rest/posts"
 
 # topics / hashtags to search for existing LinkedIn posts which will be used as input for the model
-search_topics: ["ChatGPT"]
+search_topics: ["ChatGPT", "optimumbalance", "mindfulness"]
 # topics / hashtags to post about. topics should have been scraped before as part of the search_words
-post_topics: ["ChatGPT"]
+post_topics: ["ChatGPT", "optimumbalance", "mindfulness"]
 
 # openai content creation settings
 oai_model: "gpt-3.5-turbo"

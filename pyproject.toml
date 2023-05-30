@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "RidicuLink"
-version = "0.1.0"
+version = "2.0.0"
 description = "Create fictional, satirical LLM created content based on existing text post from LinkedIn."
 authors = ["danczw <dev.dc@pm.me>"]
 license = "Apache License 2.0"
