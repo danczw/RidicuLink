@@ -1,0 +1,28 @@
+# webdriver type for scraping existing posts (chrome, firefox, or edge) and path to the driver
+selenium_driver_type: "chrome"
+selenium_driver_path: "./src/chromedriver"
+
+# table name for storing scraped posts
+db_name: "linkedin.db"
+db_table_name: "posts"
+
+# login, search url as well as text DOM element
+linkedin_login_url: "https://www.linkedin.com/login"
+linkedin_search_root_url: "https://www.linkedin.com/feed/hashtag/"
+linkedin_text_element_class: "feed-shared-update-v2__commentary"
+
+# LinkedIn Sharing settings
+linkedin_post_url: "https://api.linkedin.com/rest/posts"
+
+# topics / hashtags to search for existing LinkedIn posts which will be used as input for the model
+search_topics: ["ChatGPT", "optimumbalance", "mindfulness"]
+# topics / hashtags to post about. topics should have been scraped before as part of the search_words
+post_topics: ["ChatGPT", "optimumbalance", "mindfulness"]
+
+# openai content creation settings
+oai_model: "gpt-3.5-turbo"
+oai_max_tokens: 250
+oai_n_completions: 1
+oai_temperature: 0.7
+oai_prompt_prefix: "You are a LinkedIn Influencer, Forbes 30 under 30. Create an emotional social media post using the following posts as inspiration:"
+oai_prompt_suffix: "Make it inspirational and sensationalistic. Add hashtags and a few emojis. Make sure it ends with a call to action."
