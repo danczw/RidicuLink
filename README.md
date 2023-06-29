@@ -5,6 +5,8 @@
 <p><b>Be active to LinkedIn using computer generated posts via Large Language Models (LLM)</b></p>
 <br><br>
 <img src="./assets/ridiculink_mascot.png" width="200" height="200">
+<br><br>
+<a href="https://github.com/danczw/RidicuLink/actions"><img src="https://github.com/danczw/RidicuLink/workflows/Docker/badge.svg"></a>
 </div>
 
 <br>
