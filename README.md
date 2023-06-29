@@ -102,6 +102,25 @@ python src/main_scraper.py
 python src/main_bot.py
 ```
 
+---
+
+## ⏩ Deployment:
+
+For deployment via Docker Container, following steps are required.
+
+```bash
+
+    # 1. - build docker image locally
+    docker build -t ridic:<version> .
+
+    # 2. - run the script in Docker Container manually
+    docker run -d --env-file ./.env ridic:<version>
+
+    # 3. - run the script programmatically
+    # TODO
+
+```
+
 <br>
 
 ---

@@ -9,7 +9,7 @@ from utils.database import PostDB
 
 def main():
     # get parameters from config yaml file
-    config_params = yaml.safe_load(open("./conf/config.yml"))
+    config_params = yaml.safe_load(open("./conf/config.yml", "r"))
 
     # load env variables
     load_dotenv()
@@ -25,10 +25,10 @@ def main():
 
     # initialize bot
     bot = RidicuBot(
-        openai_key=OPENAI_API_KEY,
+        openai_key=OPENAI_API_KEY.strip('"'),
         linkedin_api_ulr=config_params["linkedin_post_url"],
-        linkedin_org_id=LINKEDIN_ORG_ID,
-        linkedin_token=LINKEDIN_ACCESS_TOKEN,
+        linkedin_org_id=LINKEDIN_ORG_ID.strip('"'),
+        linkedin_token=LINKEDIN_ACCESS_TOKEN.strip('"'),
     )
 
     # get all topics and select a random one
