@@ -57,7 +57,7 @@ def main():
     # print(bot.new_post)
 
     # post text
-    bot.post_text()
+    bot.post_text(topic=topic)
 
 
 if __name__ == "__main__":
