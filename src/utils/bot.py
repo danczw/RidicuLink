@@ -52,8 +52,12 @@ class RidicuBot:
         response = response_oai.choices[0].message.content  # type: ignore
         self.new_post = response
 
-    def post_text(self):
-        """Post text to LinkedIn"""
+    def post_text(self, topic: str):
+        """Post text to LinkedIn
+
+        Args:
+            topic (str): topic of the post
+        """
         headers = {
             "Authorization": f"Bearer {self.linkedin_token}",
             "Connection": "Keep-Alive",
@@ -64,7 +68,8 @@ class RidicuBot:
 
         post_body = {
             "author": f"urn:li:organization:{self.linkedin_org_id}",
-            "commentary": self.new_post,
+            "commentary": self.new_post
+            + f"\n\n---\n\ncreated using a LLM mocking existing posts on the topic of #{topic}",
             "visibility": "PUBLIC",
             "distribution": {
                 "feedDistribution": "MAIN_FEED",
