@@ -68,7 +68,7 @@ class RidicuBot:
 
         post_body = {
             "author": f"urn:li:organization:{self.linkedin_org_id}",
-            "commentary": f"{self.new_post}\n\n---\n\nAI based content based on existing posts with the topic of #{topic}",
+            "commentary": f"{self.new_post}\n\n---\n\nAI generated content based on existing posts with topic #{topic}",
             "visibility": "PUBLIC",
             "distribution": {
                 "feedDistribution": "MAIN_FEED",
