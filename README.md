@@ -104,7 +104,7 @@ python src/main_bot.py
 
 ---
 
-##  Deployment:
+## ⏩ Deployment:
 
 For deployment via Docker Container, following steps are required.
 
