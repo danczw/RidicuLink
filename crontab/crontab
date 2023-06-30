@@ -1,0 +1,1 @@
+* * * * * BASH_ENV=/app/env.sh /app/task.sh >> /app/task.log 2>&1

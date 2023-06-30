@@ -29,6 +29,8 @@ RUN poetry install --only main --no-root --no-ansi --no-interaction
 
 FROM python:3.10-slim
 
+RUN apt-get update && apt-get install -y bash cron
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PATH="/app/.venv/bin:$PATH"
@@ -41,6 +43,11 @@ COPY --from=builder /app/.venv ./.venv
 COPY ./src/ ./src/
 COPY ./conf/ ./conf/
 COPY ./data/ ./data/
-RUN chmod 755 src/main_bot.py
+COPY ./crontab/ ./
 
-CMD ["python", "src/main_bot.py"]
+# modify access rights and load crontab
+RUN chmod 755 task.sh
+RUN crontab crontab
+
+# run cron in foreground
+CMD ["cron", "-f"]

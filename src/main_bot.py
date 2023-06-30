@@ -17,7 +17,7 @@ def main():
     LINKEDIN_ORG_ID = os.getenv("LINKEDIN_ORG_ID")
     LINKEDIN_ACCESS_TOKEN = os.getenv("LINKEDIN_ACCESS_TOKEN")
     # check if env variables are set
-    if OPENAI_API_KEY is None or LINKEDIN_ORG_ID is None or LINKEDIN_ACCESS_TOKEN is None:
+    if OPENAI_API_KEY is None or LINKEDIN_ORG_ID is None or LINKEDIN_ACCESS_TOKEN is None:  # TODO simplify
         raise ValueError("Please set environment variables OPENAI_API_KEY, LINKEDIN_ORG_ID and LINKEDIN_ACCESS_TOKEN")
 
     # initialize database
