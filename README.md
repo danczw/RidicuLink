@@ -27,7 +27,7 @@ RidicuLink is a unique bot that generates fictional, satirical content based on 
 
 As the rise in popularity of [LinkedIn Lunatics](https://www.reddit.com/r/LinkedInLunatics/) 🔥 continues to grow, the creators of this bot saw an opportunity to poke fun at the current state of this "professional" social media site. Using LLM models, specifically currently [GPT-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5), RidicuLink generates new mind bending content from existing social media posts. This approach allows the bot to seamlessly blend into real-life interactions on LinkedIn. The result is a refreshing take on a platform that can often feel overly serious and dry 🚱. Thereby, turning social media even more into a playground for satire.
 
-The bot is currently running on a Raspberry Pi 4 and continuously generates new posts every day. In fact, most of this description was generated through GPT-3.5-turbo!
+The bot is currently running on a Raspberry Pi 4 and continuously generates new posts every day. 
 
 <img src="./assets/ridiculink_screen_I.png" width="500" height="400">
 
@@ -41,8 +41,9 @@ The bot is currently running on a Raspberry Pi 4 and continuously generates new 
 - Leveraging [OpenAI API](https://platform.openai.com/) for content generation
 - Using [SpaCy](https://spacy.io/) for text pre processing and cleaning
 - Utilizing [Selenium](https://www.selenium.dev/) for web scraping of real posts
-- With sqlite3 as a simple database
-- TODO: Deployed with [Docker](https://www.docker.com/) on a simple Raspberry Pi 4
+- With sqlite3 as a simple database for storing real posts
+- Scheduled with [Cron](https://en.wikipedia.org/wiki/Cron) to run how often you want (usual LinkedIn spam 👀)
+- Deployed with [Docker](https://www.docker.com/) on a simple Raspberry Pi 4
 
 <br>
 
@@ -106,7 +107,11 @@ python src/main_bot.py
 
 ## ⏩ Deployment:
 
-For deployment via Docker Container, following steps are required.
+For deployment via Docker Container, following steps are required (after setting up your `.env` file).
+
+The Dockerfile is based on a slim Python image and installs all dependencies via Poetry. The entry point is set to a cron job that runs the bot every twice a day. This can be changed in the [`./crontab/crontab`](./crontab/crontab) file. A wrapper script is used to propagate the environment variables from the `.env` file through the container to be available for the cron job and successfully run the bot.
+
+**Note:** all scrapping should be done before building the Docker image, as the image does not contain this functionality.
 
 ```bash
 
@@ -115,9 +120,6 @@ For deployment via Docker Container, following steps are required.
 
     # 2. - run the script in Docker Container manually
     docker run -d --env-file ./.env ridic:<version>
-
-    # 3. - run the script programmatically
-    # TODO
 
 ```
 

@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# print date and time
-echo "Current date and time: $(date)"
+echo "$(date '+%Y-%m-%d %H:%M:%S.%6N'): Running task.sh"
 
+# set working directory
 cd /app/
 
 # run bot
-echo "Running bot..."
-
-# run script and pass env variables
-./.venv/bin/python ./src/main_bot.py
+./.venv/bin/python ./src/main_bot.py >> ./task.log 2>&1

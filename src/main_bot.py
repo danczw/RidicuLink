@@ -1,5 +1,6 @@
 import os
 import random
+from datetime import datetime
 
 import yaml
 from dotenv import load_dotenv
@@ -61,4 +62,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(f"{datetime.now()}: Running main_bot.py")
     main()

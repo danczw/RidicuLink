@@ -45,9 +45,6 @@ COPY ./conf/ ./conf/
 COPY ./data/ ./data/
 COPY ./crontab/ ./
 
-# modify access rights and load crontab
-RUN chmod 755 task.sh
-RUN crontab crontab
-
-# run cron in foreground
-CMD ["cron", "-f"]
+# run wrapper script as entrypoint
+RUN chmod +x /app/wrapper.sh
+ENTRYPOINT ["/app/wrapper.sh"]
