@@ -7,7 +7,7 @@ class PostDB:
         self.cursor = self.conn.cursor()
         self.table_name = table_name
 
-    def create_table(self, drop: bool = False):
+    def create_table(self, drop: bool = False) -> None:
         """Create a table in database if it does not exist yet.
         Add columns id, topic and text.
 
@@ -26,7 +26,7 @@ class PostDB:
         self.cursor.execute(f"INSERT INTO {self.table_name} (topic, text) VALUES (?, ?)", (topic, text))
         self.conn.commit()
 
-    def get_topics(self):
+    def get_topics(self) -> list:
         """Get all unique topics from the table.
 
         Returns:
@@ -35,7 +35,7 @@ class PostDB:
         self.cursor.execute(f"SELECT DISTINCT topic FROM {self.table_name}")
         return self.cursor.fetchall()
 
-    def get_texts(self, topic: str):
+    def get_texts(self, topic: str) -> list:
         """Get all texts for a given topic.
 
         Args:

@@ -90,8 +90,9 @@ class Scraper:
 
         # itereate through posts to get post text
         for post in self.all_posts:
-            # get post text
-            self.all_texts.append(post.text)
+            # get post text if above a certain length
+            if len(post.text) > 100:
+                self.all_texts.append(post.text)
 
     def clean_texts(self, tokens: list):
         """Clean text of data privacy related content (e.g. names)
