@@ -1,0 +1,1 @@
+42 6,14 * * * /app/task.sh >> /app/task.log 2>&1

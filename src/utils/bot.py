@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import openai
 import requests
 
@@ -81,6 +83,6 @@ class RidicuBot:
 
         response = requests.post(self.linkedin_api_ulr, headers=headers, json=post_body)
         if response.status_code == 201:
-            print("Post successfully created!")
+            print(f"{datetime.now()}: Post successfully created!")
         else:
-            print(f"Post creation failed with status code {response.status_code}: {response.text}")
+            print(f"{datetime.now()}: Post creation failed with status code {response.status_code}: {response.text}")
