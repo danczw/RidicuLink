@@ -5,11 +5,13 @@
 <p><b>Be active to LinkedIn using computer generated posts via Large Language Models (LLM)</b></p>
 <br><br>
 <img src="./assets/ridiculink_mascot.png" width="200" height="200">
+<br>
+<br>
+
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 </div>
 
 <br>
-
----
 
 ## 🌟 Highlights
 
